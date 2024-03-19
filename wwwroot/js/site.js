@@ -4,8 +4,12 @@
 // Write your JavaScript code.
 
 $(document).ready(() => {
+  // Init dark mode switch
+  $("#darkmode-switch").prop("checked", localStorage.getItem("dark") === "1");
+  $("body").toggleClass("dark", localStorage.getItem("dark") === "1");
+
+  // Toggle dark mode on switch change
   $("#darkmode-switch").on("change", () => {
-    console.log(localStorage.getItem("dark"));
     // Toggle class on dark body based on localstorage value of isdark
     $("body").toggleClass("dark", localStorage.getItem("dark") === "0");
     // Set localstorage value of isdark to 1 if body has class dark
