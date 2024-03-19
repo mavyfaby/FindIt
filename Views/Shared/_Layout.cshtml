@@ -11,13 +11,15 @@
     }
 
     <link href="~/lib/beercss/beer.min.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
     <script type="module" src="~/lib/beercss/beer.min.js"></script>
     <script type="module" src="~/lib/beercss/material-dynamic-colors.min.js"></script>
+    <script type="text/javascript" src="~/lib/tailwindcss/tailwind.min.js"></script>
   </head>
-  <body>
+  <body class="hidden">
     <header>
       <nav class="container mx-auto">
-        <h6 class="max text-2xl">@ViewData["Title"]</h6>
+        <h6 class="max text-2xl text-outline">@ViewData["Title"]</h6>
         <label class="switch icon">
           <input type="checkbox" id="darkmode-switch" />
           <span>
@@ -26,12 +28,11 @@
         </label>
       </nav>
     </header>
-    <main class="container mx-auto py-6">
+    <main class="container mx-auto px-4 py-6">
       @RenderBody()
     </main>
     <script type="text/javascript" src="~/lib/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="~/lib/tailwindcss/tailwind.min.js"></script>
     <script type="text/javascript" src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
   </body>
-</html>
+</html> 
