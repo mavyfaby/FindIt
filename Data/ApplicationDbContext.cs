@@ -1,14 +1,21 @@
 ﻿using FindIt.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace FindIt.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
+        public ApplicationDbContext(DbContextOptions options): base(options)
         {
+
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Ignore ConfirmPassword property
+            modelBuilder.Entity<UserModel>().Ignore(p => p.ConfirmPassword);
+        }
+
+        public DbSet<UserModel> Users { get; set; }
     }
 }
