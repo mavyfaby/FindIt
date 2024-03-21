@@ -80,4 +80,12 @@ $(document).ready(() => {
     // Set localstorage value of isdark to 1 if body has class dark
     localStorage.setItem("dark", $("body").hasClass("dark") ? "1" : "0");
   });
+
+  $("#logout-btn").on("click", () => {
+    ui("#logout-dialog");
+  });
+
+  $("#logout-cancel").on("click", () => {
+    ui("#logout-dialog");
+  });
 });

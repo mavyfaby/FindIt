@@ -19,17 +19,47 @@
     <script type="text/javascript" src="~/lib/tailwindcss/tailwind.min.js"></script>
   </head>
   <body class="hidden">
-    <header class="absolute top-0 left-0 right-0">
+    <header class="absolute top-0 left-0 right-0 z-[2]">
       <nav class="container mx-auto px-4">
         <h6 class="max text-2xl font-bold text-outline"><span class="text-primary">Find</span>It</h6>
-        <label class="switch icon">
-          <input type="checkbox" id="darkmode-switch" />
-          <span>
-            <i>dark_mode</i>
-          </span>
-        </label>
+        <div class="flex items-center">
+          
+          @if (Context.Session.GetString("UserId") != null) {
+            <button class="circle transparent">
+              <i>person</i>
+              <div class="tooltip bottom">Account</div>
+            </button>
+            <button class="circle transparent" id="logout-btn">
+              <i>logout</i>
+              <div class="tooltip bottom">Logout</div>
+            </button>
+          } else {
+            @* TODO *@
+          }
+
+          <label class="switch icon">
+            <input type="checkbox" id="darkmode-switch" />
+            <span>
+              <i>dark_mode</i>
+            </span>
+          </label>
+        </div>
       </nav>
     </header>
+
+    <!-- Logout Dialog -->
+    <div class="overlay"></div>
+    <dialog id="logout-dialog">
+      <h5>Logout</h5>
+      <div class="mt-2">Logging out will clear your session. Are you sure you want to logout?</div>
+      <nav class="right-align no-space">
+        <button class="transparent link" id="logout-cancel">No, cancel</button>
+        <a asp-controller="User" asp-action="Logout">
+          <button class="transparent link">Yes, logout</button>
+        </a>
+      </nav>
+    </dialog>
+
     <main class="container mx-auto px-4">
       @RenderBody()
     </main>

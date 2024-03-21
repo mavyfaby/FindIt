@@ -112,5 +112,12 @@ namespace FindIt.Controllers
 
             return View("Index");
         }
+
+        public ActionResult Logout()
+        {
+            // Clear session
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login");
+        }
     }
 }

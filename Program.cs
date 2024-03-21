@@ -21,6 +21,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddSession(options => {
+    options.Cookie.Name = ".FindIt.Session";
     options.IdleTimeout = TimeSpan.FromSeconds(1800); // 30 minutes
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
