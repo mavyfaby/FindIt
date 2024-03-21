@@ -44,7 +44,9 @@
       @foreach (var item in Model)
       {
         <article class="no-padding w-full m-0">
-          <img class="responsive small" src="data:image;base64,@System.Convert.ToBase64String(@item.Image)">
+          <a class="responsive small" href="data:image;base64,@System.Convert.ToBase64String(@item.Image)" data-fancybox data-caption="@item.Name - @item.Description">
+            <img class="responsive small" src="data:image;base64,@System.Convert.ToBase64String(@item.Image)">
+          </a>
           <div class="padding">
             <h5>@item.Name</h5>
             <p class="text-outline mb-4">@item.Description</p>

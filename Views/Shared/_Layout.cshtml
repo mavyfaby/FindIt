@@ -11,9 +11,11 @@
     }
 
     <link href="~/lib/beercss/beer.min.css" rel="stylesheet" />
+    <link href="~/lib/fancyapps/ui/fancybox.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
     <script type="module" src="~/lib/beercss/beer.min.js"></script>
     <script type="module" src="~/lib/beercss/material-dynamic-colors.min.js"></script>
+    <script type="text/javascript" src="~/lib/fancyapps/ui/fancybox.umd.js"></script>
     <script type="text/javascript" src="~/lib/tailwindcss/tailwind.min.js"></script>
   </head>
   <body class="hidden">
@@ -44,6 +46,24 @@
 
     <script type="text/javascript">
       $(document).ready(function () {
+        Fancybox.bind("[data-fancybox]", {
+          Toolbar: {
+            display: {
+              left: ["infobar"],
+              middle: [
+                "zoomIn", "zoomOut", "toggle1to1", 
+                "rotateCCW", "rotateCW", "flipX", "flipY",
+              ],
+              right: [
+                "iterateZoom",
+                "download",
+                "fullscreen",
+                "close"
+              ]
+            }
+          }
+        });
+
         if ("@TempData["SnackbarMessage"]".length > 0) {
           ui("#snackbar", 5000);
         }
