@@ -1,6 +1,7 @@
 using FindIt.Data;
 using FindIt.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 using System.Diagnostics;
 
 namespace FindIt.Controllers
@@ -75,6 +76,44 @@ namespace FindIt.Controllers
             TempData["SnackbarType"] = "success";
 
             return RedirectToAction("Items", "Find");
+        }
+
+        [HttpPost]
+        public ActionResult Delete()
+        {
+            int itemId;
+
+            try {
+                bool IsParsed = int.TryParse(Request.Form["Id"], out itemId);
+
+                Console.WriteLine("FORMMMMMMMMMMMMMMM: " + Request.Form["Id"]);
+                
+                if (!IsParsed) {
+                    throw new Exception("Invalid ItemID");
+                }
+                
+            } catch (Exception e) {
+                TempData["SnackbarMessage"] = e.Message;
+                TempData["SnackbarType"] = "error";
+                return RedirectToAction("Account", "User");
+            }
+
+            var item = _context.Items.FirstOrDefault(i => i.Id == itemId);
+
+            if (item == null)
+            {
+                TempData["SnackbarMessage"] = "Item not found";
+                TempData["SnackbarType"] = "error";
+                return RedirectToAction("Items", "Find");
+            }
+
+            _context.Items.Remove(item);
+            _context.SaveChanges();
+
+            TempData["SnackbarMessage"] = "Item deleted successfully";
+            TempData["SnackbarType"] = "success";
+
+            return RedirectToAction("Account", "User");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

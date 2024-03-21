@@ -24,6 +24,18 @@ namespace FindIt.Controllers
             return View();
         }
 
+        public IActionResult Account()
+        {
+            if (HttpContext.Session.GetString("UserId") == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var id = int.Parse(HttpContext.Session.GetString("UserId")!);
+
+            return View(_context.Items.Where(i => i.UserId == id).ToList());
+        }
+
         [HttpPost]
         public ActionResult Register([Bind("FirstName,LastName,Email,Username,PhoneNumber,Password,ConfirmPassword")] UserModel user)
         {

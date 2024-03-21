@@ -1,0 +1,104 @@
+@{
+  if (Context.Session.GetString("UserId") == null) {
+    Context.Response.Redirect("/User/Login");
+    return;
+  }
+
+  string fullName = Context.Session.GetString("FirstName") + " " + Context.Session.GetString("LastName");
+  ViewData["Title"] = fullName;
+}
+
+@model List<FindIt.Models.ItemModel>
+
+<div class="flex flex-col items-center justify-center pt-24">
+  <button class="transparent rounded-[50%] !w-[100px] !h-[100px] p-0 m-0">
+    <i class="text-outline text-[75px] !w-[75px] !h-[75px]">account_circle</i>
+  </button> 
+
+  <h6 class="mt-0 text-2xl font-medium text-primary">@fullName</h6>
+  <p class="my-1 text-xs text-outline">@Context.Session.GetString("Username")</p>
+
+  <div class="w-full sm:w-3/4 lg:w-2/5 mt-5">
+    <a class="row wave round">
+      <i>person</i>
+      <div class="max">Change Name</div>
+      <span class="text-outline">@fullName</span>
+    </a>
+    <a class="row wave round">
+      <i>person</i>
+      <div class="max">Change Username</div>
+      <span class="text-outline">@Context.Session.GetString("Username")</span>
+    </a>
+    <a class="row wave round">
+      <i>key</i>
+      <div class="max">Change Password</div>
+      <span class="text-outline">********</span>
+    </a>
+  </div>
+  <h6 class=" text-xl mt-12 text-on-surface-variant">Your lost items listing</h6>
+
+  <dialog id="item-delete-dialog">
+    <h5>Delete Item?</h5>
+    <div class="mt-2" id="item-delete-dialog-message"></div>
+    <nav class="right-align no-space">
+      <button class="transparent link" id="item-delete-dialog-cancel">No, cancel</button>
+      @using (Html.BeginForm("Delete", "Item", FormMethod.Post)) {
+        @Html.Hidden("Id", "", new { id = "item-delete-dialog-id" })
+        <a asp-controller="User" asp-action="Logout">
+          <button class="transparent link">Yes, delete</button>
+        </a>
+      }
+    </nav>
+  </dialog>
+  
+  @if (Model.Count == 0) {
+    <div class="text-center font-medium text-outline mt-2">No items found</div>
+  } else {
+    <div class="flex flex-wrap mt-5"> 
+    @foreach (var item in Model)
+    {
+      var image = Convert.ToBase64String(item.Image);
+
+      <article class="flex flex-row justify-center p-4 m-0">
+        <a class="m-0" href="data:image;base64,@image" data-fancybox data-caption="@item.Name - @item.Description">
+          <img class="w-16" src="data:image;base64,@image">
+        </a>
+
+        <div class="mr-5">
+          <h6 class="text-xl pl-4">@item.Name</h6>
+          <p class="text-outline pl-4 mt-0">@FindIt.Utils.UtilString.Truncate(@item.Description, 15)</p>
+        </div>
+
+        <div class="flex items-center justify-end">
+          <button class="font-medium border account-item-delete" data-item-name="@item.Name" data-item-id="@item.Id">
+            <i>delete</i> Delete
+          </button>
+          <a asp-controller="Find" asp-action="Items" asp-route-id="@item.Id" class="-mx-2">
+            <button class="font-medium">View Item</button>
+          </a>
+        </div>
+      </article>
+    }
+    </div>
+  }
+</div>
+
+@section Scripts {
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $(".account-item-delete").on("click", function () {
+        var itemName = $(this).data("item-name");
+        var itemId = $(this).data("item-id");
+        var message = "Are you sure you want to delete " + itemName + "?";
+
+        $("#item-delete-dialog-message").text(message);
+        $("#item-delete-dialog-id").val(itemId);
+        ui("#item-delete-dialog");
+      });
+
+      $("#item-delete-dialog-cancel").on("click", function () {
+        ui("#item-delete-dialog");
+      });
+    });
+  </script>
+}

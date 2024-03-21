@@ -22,22 +22,36 @@
     <header class="absolute top-0 left-0 right-0 z-[2]">
       <nav class="container mx-auto px-4">
         <h6 class="max text-2xl font-bold text-outline"><span class="text-primary">Find</span>It</h6>
-        <div class="flex items-center">
+        <div class="flex items-center text-on-surface-variant">
           
-          @if (Context.Session.GetString("UserId") != null) {
+          <a href="/">
             <button class="circle transparent">
-              <i>person</i>
-              <div class="tooltip bottom">Account</div>
+              <i>home</i>
+              <div class="tooltip bottom">Home</div>
             </button>
-            <button class="circle transparent" id="logout-btn">
+          </a>
+
+          @if (Context.Session.GetString("UserId") != null) {
+            <a asp-controller="User" asp-action="Account">
+              <button class="circle transparent">
+                <i>person</i>
+                <div class="tooltip bottom">Account</div>
+              </button>
+            </a>
+            <button class="transparent circle" id="logout-btn">
               <i>logout</i>
               <div class="tooltip bottom">Logout</div>
             </button>
           } else {
-            @* TODO *@
+            <a asp-controller="User" asp-action="Login">
+              <button class="transparent circle">
+                <i>login</i>
+                <div class="tooltip bottom">Login</div>
+              </button>
+            </a>    
           }
 
-          <label class="switch icon">
+          <label class="ml-2 switch icon">
             <input type="checkbox" id="darkmode-switch" />
             <span>
               <i>dark_mode</i>

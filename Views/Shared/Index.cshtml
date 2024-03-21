@@ -9,8 +9,16 @@
     <a asp-controller="Find" asp-action="Items">
       <button>Lost Something</button>
     </a>
-    <a asp-controller="User" asp-action="Login">
-      <button class="fill">Found Something</button>
-    </a>
+
+    @if (Context.Session.GetString("UserId") != null)
+    {
+      <a asp-controller="Item" asp-action="New">
+        <button class="fill">Found Something</button>
+      </a>
+    } else {
+      <a asp-controller="User" asp-action="Login">
+        <button class="fill">Found Something</button>
+      </a>
+    }
   </div>
 </div>
