@@ -16,11 +16,18 @@ namespace FindIt.Controllers
 
         public IActionResult New()
         {
+            // If no session, redirect to login
+            if (HttpContext.Session.GetString("UserId") == null)
+            {
+                TempData["SnackbarMessage"] = "Please login to continue";
+                return RedirectToAction("Login", "User");
+            }
+
             return View();
         }
 
         [HttpPost]
-        public ActionResult Add([Bind("Name,Category,DateLost,Location,Description")] ItemModel item)
+        public async Task<ActionResult> Add([Bind("Name,Category,DateFound,Location,Description")] ItemModel item)
         {
             using var memoryStream = new MemoryStream();
             IFormFile? image = Request.Form.Files[0];
@@ -39,7 +46,13 @@ namespace FindIt.Controllers
                 return View("New");
             }
 
-            Request.Form.Files[0].CopyToAsync(memoryStream);
+            if (HttpContext.Session.GetString("UserId") == null)
+            {
+                TempData["SnackbarMessage"] = "Please login to continue";
+                return RedirectToAction("Login", "User");
+            }
+
+            await Request.Form.Files[0].CopyToAsync(memoryStream);
 
             if (memoryStream.Length > 1024000)
             {
@@ -49,9 +62,11 @@ namespace FindIt.Controllers
             }
 
             item.Status = 1; // 1 = Lost
+            item.UserId = int.Parse(HttpContext.Session.GetString("UserId")!); // User ID
             item.StatusUpdated = DateTime.Now; // Current date
             item.Category = int.Parse(category);
             item.Image = memoryStream.ToArray();
+            item.DateStamp = DateTime.Now;
 
             _context.Items.Add(item);
             _context.SaveChanges();

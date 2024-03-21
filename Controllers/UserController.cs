@@ -104,6 +104,12 @@ namespace FindIt.Controllers
                 return View("Login");
             }
 
+            // Set session
+            HttpContext.Session.SetString("UserId", userDb.Id.ToString());
+            HttpContext.Session.SetString("Username", userDb.Username);
+            HttpContext.Session.SetString("FirstName", userDb.FirstName);
+            HttpContext.Session.SetString("LastName", userDb.LastName);
+
             return View("Index");
         }
     }
