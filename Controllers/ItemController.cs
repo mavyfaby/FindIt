@@ -24,6 +24,14 @@ namespace FindIt.Controllers
         {
             using var memoryStream = new MemoryStream();
             IFormFile? image = Request.Form.Files[0];
+            string? category = Request.Form["category"];
+
+            if (category == null)
+            {
+                TempData["SnackbarMessage"] = "Please select a category";
+                TempData["SnackbarType"] = "error";
+                return View("New");
+            }
 
             if (image == null) {
                 TempData["SnackbarMessage"] = "Please select an image";
@@ -40,6 +48,9 @@ namespace FindIt.Controllers
                 return View("New");
             }
 
+            item.Status = 1; // 1 = Lost
+            item.StatusUpdated = DateTime.Now; // Current date
+            item.Category = int.Parse(category);
             item.Image = memoryStream.ToArray();
 
             _context.Items.Add(item);

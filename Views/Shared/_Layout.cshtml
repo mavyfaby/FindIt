@@ -32,7 +32,7 @@
       @RenderBody()
     </main>
   
-    @if (TempData["SnackbarType"] != null && TempData["SnackbarType"].ToString().Length > 0) {
+    @if (TempData["SnackbarType"] != null) {
       <div class="snackbar @TempData["SnackbarType"]" id="snackbar">@TempData["SnackbarMessage"]</div>
     } else {
       <div class="snackbar" id="snackbar">@TempData["SnackbarMessage"]</div>
