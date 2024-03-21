@@ -35,6 +35,7 @@ body {
   --surface-container:#eeedf1;
   --surface-container-high:#e8e8eb;
   --surface-container-highest:#e2e2e6;
+  color-scheme: light;
 }
 
 body.dark {
@@ -74,6 +75,11 @@ body.dark {
   --surface-container:#1e2022;
   --surface-container-high:#282a2d;
   --surface-container-highest:#333538;
+  color-scheme: dark;
+}
+
+body.dark select option, body.dark select optgroup {
+  background-color: var(--surface-container-high);
 }
 
 @font-face {

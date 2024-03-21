@@ -3,61 +3,101 @@
 }
 
 @model List<FindIt.Models.ItemModel>;
+@inject FindIt.Data.ApplicationDbContext DbContext
 
-<div class="">
-  <main class="responsive !pr-0">
-    <div class="flex gap-5 flex-col md:flex-row justify-between mt-20">
-      <div class="flex items-center gap-1">
-        <h3 class="text-3xl mt-1">Find Items</h3>
-        <a class="chip fill" asp-controller="Item" asp-action="New">
-          <i>add</i>
-          <span>New item</span>
-        </a>
-      </div>
-      <div class="field large prefix round fill">
-        <i class="front">search</i>
-        <input placeholder="Search lost item" />
-        <menu class="min">
-          <div class="field large prefix suffix no-margin fixed">
-            <i class="front">arrow_back</i>
-            <input>
-            <i class="front">close</i>
-          </div>
-          <a class="row">
-            <i>history</i>
-            <div>Item 1</div>
-          </a>
-          <a class="row">
-            <i>history</i>
-            <div>Item 2</div>
-          </a>
-          <a class="row">
-            <i>history</i>
-            <div>Item 3</div>
-          </a>
-        </menu>
-      </div>
-    </div>
+<div class="pt-24">
+  <main>
+    @if (@ViewContext.RouteData.Values.ContainsKey("id")) {
+      ItemModel? item = Model.Find(x => x.Id == Convert.ToInt32(@ViewContext.RouteData.Values["id"]));
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-      <!-- Item list -->
-      @foreach (var item in Model)
-      {
-        <article class="no-padding w-full m-0">
-          <a class="responsive small" href="data:image;base64,@System.Convert.ToBase64String(@item.Image)" data-fancybox data-caption="@item.Name - @item.Description">
-            <img class="responsive small" src="data:image;base64,@System.Convert.ToBase64String(@item.Image)">
-          </a>
-          <div class="padding">
-            <h5>@item.Name</h5>
-            <p class="text-outline mb-4">@item.Description</p>
-            <div class="flex justify-end">
-              <a asp-controller="Find" asp-action="Items" asp-route-id="@item.Id" class="-mx-2">
-                <button class="font-medium">Claim Item</button>
-              </a>
-            </div>
-          </div>
-        </article>
+      if (item == null) {
+        <div class="pt-16">
+           <div class="text-center font-medium text-outline">Item #@ViewContext.RouteData.Values["id"] found</div>
+        </div>
+
+        return;
       }
-    </div>
+
+      var image = Convert.ToBase64String(item.Image);
+      var user = DbContext.Users.Find(item.UserId);
+
+      <div class="pt-24">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+          <div class="flex items-center justify-center">
+            <a href="data:image;base64,@image" data-fancybox data-caption="@item.Name - @item.Description">
+              <img class="rounded-xl w-full" src="data:image;base64,@image">
+            </a>
+          </div>
+          <div>
+            <h4 class="text-primary text-xl sm:text-3xl">@item.Name</h4>
+            <article class="shadow-none">
+              <p>@item.Description</p>
+            </article>
+            <p class="text-left text-outline text-sm mt-5">Posted by <span class="text-primary">@user.Username</span></p>
+          </div>
+        </div>
+      </div>
+    } else {
+      <div class="flex gap-5 flex-col md:flex-row justify-between">
+        <div class="flex items-center gap-1">
+          <h3 class="text-3xl mt-1">Find Items</h3>
+          <a class="chip fill" asp-controller="Item" asp-action="New">
+            <i>add</i>
+            <span>New item</span>
+          </a>
+        </div>
+        <div class="field large prefix round fill">
+          <i class="front">search</i>
+          <input placeholder="Search lost item" />
+          <menu class="min">
+            <div class="field large prefix suffix no-margin fixed">
+              <i class="front">arrow_back</i>
+              <input>
+              <i class="front">close</i>
+            </div>
+            <a class="row">
+              <i>history</i>
+              <div>Item 1</div>
+            </a>
+            <a class="row">
+              <i>history</i>
+              <div>Item 2</div>
+            </a>
+            <a class="row">
+              <i>history</i>
+              <div>Item 3</div>
+            </a>
+          </menu>
+        </div>
+      </div>     
+
+      @if (Model.Count == 0) {
+        <div class="pt-12">
+          <div class="text-center font-medium text-outline">No items found</div>
+        </div>
+      } else {
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"> 
+          @foreach (var item in Model)
+          {
+            var image = Convert.ToBase64String(item.Image);  
+
+            <article class="no-padding w-full m-0">
+              <a class="responsive small" href="data:image;base64,@image" data-fancybox data-caption="@item.Name - @item.Description">
+                <img class="responsive small" src="data:image;base64,@image">
+              </a>
+              <div class="padding">
+                <h5>@item.Name</h5>
+                <p class="text-outline mb-4">@item.Description</p>
+                <div class="flex justify-end">
+                  <a asp-controller="Find" asp-action="Items" asp-route-id="@item.Id" class="-mx-2">
+                    <button class="font-medium">View Item</button>
+                  </a>
+                </div>
+              </div>
+            </article>
+          }
+        </div>
+      }
+    }
   </main>
 </div>
