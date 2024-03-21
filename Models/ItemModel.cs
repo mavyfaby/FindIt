@@ -24,7 +24,7 @@ namespace FindIt.Models
         public required byte[] Image { get; set; }
 
         [Column("date_lost")]
-        public required DateTime? DateLost { get; set; }
+        public required DateTime DateLost { get; set; }
 
         [Column("status")]
         public required int Status { get; set; }
@@ -42,7 +42,7 @@ namespace FindIt.Models
         public required DateTime? ClaimedDate { get; set; }
         
         [Column("claimed_notes")]
-        public required string ClaimedNotes { get; set; }
+        public required string? ClaimedNotes { get; set; }
 
         [Column("date_stamp")]
         public DateTime DateStamp { get; set; }

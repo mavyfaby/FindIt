@@ -1,3 +1,4 @@
+using FindIt.Data;
 using FindIt.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -6,16 +7,16 @@ namespace FindIt.Controllers
 {
     public class FindController : Controller
     {
-        private readonly ILogger<FindController> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public FindController(ILogger<FindController> logger)
+        public FindController(ApplicationDbContext context)
         {
-            _logger = logger;
+            _context = context;
         }
 
         public IActionResult Items()
         {
-            return View();
+            return View(_context.Items.ToList());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -2,12 +2,11 @@
   ViewData["Title"] = "Find Items";
 }
 
-<div class="">
-  <nav class="left drawer">
+@model List<FindIt.Models.ItemModel>;
 
-  </nav>
+<div class="">
   <main class="responsive !pr-0">
-    <div class="flex justify-between mt-20">
+    <div class="flex gap-5 flex-col md:flex-row justify-between mt-20">
       <div class="flex items-center gap-1">
         <h3 class="text-3xl mt-1">Find Items</h3>
         <a class="chip fill" asp-controller="Item" asp-action="New">
@@ -17,7 +16,7 @@
       </div>
       <div class="field large prefix round fill">
         <i class="front">search</i>
-        <input placeholder="Search Items" />
+        <input placeholder="Search lost item" />
         <menu class="min">
           <div class="field large prefix suffix no-margin fixed">
             <i class="front">arrow_back</i>
@@ -38,6 +37,25 @@
           </a>
         </menu>
       </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+      <!-- Item list -->
+      @foreach (var item in Model)
+      {
+        <article class="no-padding w-full m-0">
+          <img class="responsive small" src="data:image;base64,@System.Convert.ToBase64String(@item.Image)">
+          <div class="padding">
+            <h5>@item.Name</h5>
+            <p class="text-outline mb-4">@item.Description</p>
+            <div class="flex justify-end">
+              <a asp-controller="Find" asp-action="Items" asp-route-id="@item.Id" class="-mx-2">
+                <button class="font-medium">Claim Item</button>
+              </a>
+            </div>
+          </div>
+        </article>
+      }
     </div>
   </main>
 </div>
