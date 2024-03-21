@@ -2,6 +2,7 @@ using FindIt.Data;
 using FindIt.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using BCrypt;
 
 namespace FindIt.Controllers
 {
@@ -59,6 +60,8 @@ namespace FindIt.Controllers
 
             // Set datestamp
             user.DateStamp = DateTime.Now;
+            // Hash password
+            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
 
             // Add user to database
             _context.Users.Add(user);
@@ -84,10 +87,10 @@ namespace FindIt.Controllers
             }
 
             // Check if user exists 
-            var userExists = _context.Users.FirstOrDefault(u => u.Username == user.Username);
+            UserModel? userDb = _context.Users.FirstOrDefault(u => u.Username == user.Username);
 
             // If user does not exist, return error
-            if (userExists == null)
+            if (userDb == null)
             {
                 ViewBag.SnackbarMessage = "User does not exist";
                 ViewBag.SnackbarType = "error";
@@ -95,7 +98,7 @@ namespace FindIt.Controllers
             }
 
             // Check if password is correct
-            if (userExists.Password != user.Password)
+            if (!BCrypt.Net.BCrypt.Verify(user.Password, userDb.Password))
             {
                 ViewBag.SnackbarMessage = "Password is incorrect";
                 ViewBag.SnackbarType = "error";
