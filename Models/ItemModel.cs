@@ -8,6 +8,9 @@ namespace FindIt.Models
         [Column("id")]
         public required int Id { get; set; }
 
+        [Column("user_id")]
+        public required int UserId { get; set; }
+
         [Column("category")]
         public required int Category { get; set; }
 
@@ -23,17 +26,14 @@ namespace FindIt.Models
         [Column("image")]
         public required byte[] Image { get; set; }
 
-        [Column("date_lost")]
-        public required DateTime DateLost { get; set; }
+        [Column("date_found")]
+        public required DateTime? DateFound { get; set; }
 
         [Column("status")]
         public required int Status { get; set; }
 
         [Column("status_updated")]
         public required DateTime? StatusUpdated { get; set; }
-
-        [Column("date_found")]
-        public required DateTime? DateFound { get; set; }
 
         [Column("claimed_by")]
         public required int? ClaimedBy { get; set; }

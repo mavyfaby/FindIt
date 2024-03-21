@@ -4,16 +4,13 @@
 
 @model FindIt.Models.ItemModel;
 
-<div class="grid grid-cols-2 items-center w-full pt-24 h-[100dvh]">
-  <div>
-    <h5>New <span class="text-primary mx-1.5">lost</span> item</h5>
-    <p class="text-outline mt-0">Briefly describe the item type (e.g., keys, wallet, phone)</p>
-  </div>
-    
+<div class="flex justify-center items-center w-full h-[100dvh]">
   @using (Html.BeginForm("Add", "Item", FormMethod.Post, new { enctype = "multipart/form-data" }))
   {
-    <div class="space-y-4 px-4">
-      <h6>Item Details</h6>
+    <div class="space-y-5 px-4">
+      <h5>New <span class="text-primary mx-1.5">lost</span> item</h5>
+      <p class="text-outline !mt-1 !mb-6">Briefly describe the item type (e.g., keys, wallet, phone)</p>
+
       <div class="grid grid-cols-2">
         <div class="field label prefix round fill">
           <i>box</i>
@@ -38,13 +35,13 @@
       <div class="grid grid-cols-2">
         <div class="field label prefix fill round">
           <i>today</i>
-          @Html.TextBoxFor(model => model.DateLost, new { Type = "datetime-local", Required = true })
-          <label>When was it lost? <span class="text-error">*</span></label>
+          @Html.TextBoxFor(model => model.DateFound, new { Type = "datetime-local", Required = true })
+          <label>When was it found? <span class="text-error">*</span></label>
         </div>
         <div class="field label prefix fill round">
           <i>location_on</i>
           @Html.TextBoxFor(model => model.Location, new { Type = "text", Required = true })
-          <label>Where was it lost? <span class="text-error">*</span></label>
+          <label>Where was it found? <span class="text-error">*</span></label>
         </div>
       </div>
 
@@ -53,7 +50,7 @@
         @Html.TextAreaFor(model => model.Description, new { Type = "text", Required = true })
         <label>Describe the item <span class="text-error">*</span></label>
       </div>
-
+      <p>Adding lost item as <span class="text-primary italic">@Context.Session.GetString("Username")</span></p>
       <div class="flex justify-end">
         <button>
           <i>upload</i> Submit
