@@ -17,7 +17,7 @@
     <script type="text/javascript" src="~/lib/tailwindcss/tailwind.min.js"></script>
   </head>
   <body class="hidden">
-    <header>
+    <header class="absolute top-0 left-0 right-0">
       <nav class="container mx-auto">
         <h6 class="max text-2xl text-outline">@ViewData["Title"]</h6>
         <label class="switch icon">
@@ -28,7 +28,7 @@
         </label>
       </nav>
     </header>
-    <main class="container mx-auto px-4 py-6">
+    <main class="container mx-auto px-4">
       @RenderBody()
     </main>
   

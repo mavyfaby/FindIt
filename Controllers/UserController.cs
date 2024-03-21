@@ -2,7 +2,6 @@ using FindIt.Data;
 using FindIt.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using BCrypt;
 
 namespace FindIt.Controllers
 {
