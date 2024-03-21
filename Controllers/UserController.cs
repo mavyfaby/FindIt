@@ -25,7 +25,7 @@ namespace FindIt.Controllers
         }
 
         [HttpPost]
-        public ActionResult Register([Bind("FirstName,LastName,Email,Username,Password,ConfirmPassword")] UserModel user)
+        public ActionResult Register([Bind("FirstName,LastName,Email,Username,PhoneNumber,Password,ConfirmPassword")] UserModel user)
         {
             // Check if password and confirm password match
             if (user.Password != user.ConfirmPassword)
@@ -70,7 +70,7 @@ namespace FindIt.Controllers
             TempData["SnackbarMessage"] = "User registered successfully";
             TempData["SnackbarType"] = "success";
 
-            return View("Signup");
+            return RedirectToAction("Login");
         }
 
         [AllowAnonymous]

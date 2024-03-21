@@ -23,6 +23,9 @@ namespace FindIt.Models
         [Column("email")]
         public required string Email { get; set; }
 
+        [Column("phone_number")]
+        public required string PhoneNumber { get; set; }
+
         [Column("date_stamp")]
         public DateTime? DateStamp { get; set; }
         public string? ConfirmPassword { get; set; }
