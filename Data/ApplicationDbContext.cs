@@ -17,5 +17,7 @@ namespace FindIt.Data
         }
 
         public DbSet<UserModel> Users { get; set; }
+        public DbSet<CategoryModel> Categories { get; set; }
+        public DbSet<ItemModel> Items { get; set; }
     }
 }

@@ -32,10 +32,10 @@
       @RenderBody()
     </main>
   
-    @if (ViewBag.SnackbarType != null && ViewBag.SnackbarType.Length > 0) {
-      <div class="snackbar @ViewBag.SnackbarType" id="snackbar">@ViewBag.SnackbarMessage</div>
+    @if (TempData["SnackbarType"] != null && TempData["SnackbarType"].ToString().Length > 0) {
+      <div class="snackbar @TempData["SnackbarType"]" id="snackbar">@TempData["SnackbarMessage"]</div>
     } else {
-      <div class="snackbar" id="snackbar">@ViewBag.SnackbarMessage</div>
+      <div class="snackbar" id="snackbar">@TempData["SnackbarMessage"]</div>
     }
 
     <script type="text/javascript" src="~/lib/jquery/jquery.min.js"></script>
@@ -44,7 +44,7 @@
 
     <script type="text/javascript">
       $(document).ready(function () {
-        if ("@ViewBag.SnackbarMessage".length > 0) {
+        if ("@TempData["SnackbarMessage"]".length > 0) {
           ui("#snackbar", 5000);
         }
       });

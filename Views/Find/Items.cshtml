@@ -4,11 +4,17 @@
 
 <div class="">
   <nav class="left drawer">
-    
+
   </nav>
   <main class="responsive !pr-0">
     <div class="flex justify-between mt-20">
-      <h3 class="text-3xl">Find Items</h3>
+      <div class="flex items-center gap-1">
+        <h3 class="text-3xl mt-1">Find Items</h3>
+        <a class="chip fill" asp-controller="Item" asp-action="New">
+          <i>add</i>
+          <span>New item</span>
+        </a>
+      </div>
       <div class="field large prefix round fill">
         <i class="front">search</i>
         <input placeholder="Search Items" />
