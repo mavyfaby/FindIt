@@ -1,5 +1,6 @@
 using FindIt.Data;
 using FindIt.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FindIt.Controllers
@@ -68,6 +69,40 @@ namespace FindIt.Controllers
             ViewBag.SnackbarType = "success";
 
             return View("Signup");
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public ActionResult Login([Bind("Username,Password")] UserModel user)
+        {
+            // Check if username or password is empty
+            if (string.IsNullOrEmpty(user.Username) || string.IsNullOrEmpty(user.Password))
+            {
+                ViewBag.SnackbarMessage = "Username or Password cannot be empty";
+                ViewBag.SnackbarType = "error";
+                return View("Login");
+            }
+
+            // Check if user exists 
+            var userExists = _context.Users.FirstOrDefault(u => u.Username == user.Username);
+
+            // If user does not exist, return error
+            if (userExists == null)
+            {
+                ViewBag.SnackbarMessage = "User does not exist";
+                ViewBag.SnackbarType = "error";
+                return View("Login");
+            }
+
+            // Check if password is correct
+            if (userExists.Password != user.Password)
+            {
+                ViewBag.SnackbarMessage = "Password is incorrect";
+                ViewBag.SnackbarType = "error";
+                return View("Login");
+            }
+
+            return View("Index");
         }
     }
 }
