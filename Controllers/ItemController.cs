@@ -79,6 +79,51 @@ namespace FindIt.Controllers
         }
 
         [HttpPost]
+        public ActionResult Comment() {
+            int itemId;
+            int userId;
+            string? text;
+
+            try {
+                bool IsParsed = int.TryParse(Request.Form["ItemId"], out itemId);
+
+                if (!IsParsed) {
+                    throw new Exception("Invalid ItemID");
+                }
+
+                IsParsed = int.TryParse(Request.Form["UserId"], out userId);
+
+                if (!IsParsed) {
+                    throw new Exception("Invalid UserID");
+                }
+
+                text = Request.Form["Text"];
+
+                if (text?.Length == 0) {
+                    throw new Exception("Comment cannot be empty");
+                }
+
+                // Save comment to database
+                var commentModel = new CommentModel {
+                    ItemId = itemId,
+                    UserId = userId,
+                    Text = text ?? "",
+                    DateStamp = DateTime.Now
+                };
+
+                _context.Comments.Add(commentModel);
+                _context.SaveChanges();
+
+                return RedirectToAction("Items", "Find", new { id = itemId });
+            } catch (Exception e) {
+                TempData["SnackbarMessage"] = e.Message;
+                TempData["SnackbarType"] = "error";
+                return RedirectToAction("Items", "Find", 1);
+            }
+        }
+
+
+        [HttpPost]
         public ActionResult Delete()
         {
             int itemId;
@@ -86,8 +131,6 @@ namespace FindIt.Controllers
             try {
                 bool IsParsed = int.TryParse(Request.Form["Id"], out itemId);
 
-                Console.WriteLine("FORMMMMMMMMMMMMMMM: " + Request.Form["Id"]);
-                
                 if (!IsParsed) {
                     throw new Exception("Invalid ItemID");
                 }
